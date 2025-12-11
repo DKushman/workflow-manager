@@ -497,13 +497,13 @@ export default function WebDevWorkflow() {
           </div>
         </div>
 
-        <div className="max-w-7xl mx-auto px-12 py-16">
-          <div className="mb-12">
-            <h2 className="text-5xl font-light tracking-tight mb-4 text-gray-900">Bereiche</h2>
-            <p className="text-gray-400 text-lg">Wähle einen Workflow-Bereich</p>
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-8 lg:px-12 py-8 sm:py-12 md:py-16">
+          <div className="mb-8 sm:mb-10 md:mb-12">
+            <h2 className="text-3xl sm:text-4xl md:text-5xl font-light tracking-tight mb-2 sm:mb-4 text-gray-900">Bereiche</h2>
+            <p className="text-gray-400 text-base sm:text-lg">Wähle einen Workflow-Bereich</p>
           </div>
 
-          <div className="grid gap-6">
+          <div className="grid gap-4 sm:gap-6">
             {[
               { key: 'guidelines', title: 'Frontend Guidelines', emoji: '⚙️', items: selectedClient.guidelines, desc: 'Best Practices für Frontend-Entwicklung' },
               { key: 'workflow', title: 'Ablauf', emoji: '📋', items: selectedClient.workflow, desc: 'Projektmanagement und Planung' },
@@ -514,32 +514,32 @@ export default function WebDevWorkflow() {
                 <div
                   key={section.key}
                   onClick={() => setView(section.key)}
-                  className="bg-white rounded-3xl border border-gray-200 hover:shadow-xl transition-all cursor-pointer group"
+                  className="bg-white rounded-2xl sm:rounded-3xl border border-gray-200 hover:shadow-xl transition-all cursor-pointer group"
                 >
-                  <div className="p-10">
-                    <div className="flex items-center gap-6 mb-6">
-                      <div className="w-20 h-20 bg-gradient-to-br from-gray-100 to-gray-200 rounded-2xl flex items-center justify-center text-4xl">
+                  <div className="p-4 sm:p-6 md:p-10">
+                    <div className="flex items-center gap-3 sm:gap-4 md:gap-6 mb-4 sm:mb-5 md:mb-6">
+                      <div className="w-14 h-14 sm:w-16 sm:h-16 md:w-20 md:h-20 bg-gradient-to-br from-gray-100 to-gray-200 rounded-xl sm:rounded-2xl flex items-center justify-center text-2xl sm:text-3xl md:text-4xl flex-shrink-0">
                         {section.emoji}
                       </div>
-                      <div className="flex-1">
-                        <h3 className="text-3xl font-medium text-gray-900 mb-2">{section.title}</h3>
-                        <p className="text-gray-400">{section.desc}</p>
+                      <div className="flex-1 min-w-0">
+                        <h3 className="text-xl sm:text-2xl md:text-3xl font-medium text-gray-900 mb-1 sm:mb-2">{section.title}</h3>
+                        <p className="text-sm sm:text-base text-gray-400">{section.desc}</p>
                       </div>
-                      <ChevronRight size={28} className="text-gray-300 group-hover:text-gray-500 transition-colors" />
+                      <ChevronRight size={20} className="sm:w-6 sm:h-6 md:w-7 md:h-7 text-gray-300 group-hover:text-gray-500 transition-colors flex-shrink-0" />
                     </div>
                     
-                    <div className="space-y-4">
+                    <div className="space-y-3 sm:space-y-4">
                       <div className="flex justify-between items-center">
-                        <span className="text-sm text-gray-500">Fortschritt</span>
-                        <span className="text-2xl font-light text-gray-900">{progress}%</span>
+                        <span className="text-xs sm:text-sm text-gray-500">Fortschritt</span>
+                        <span className="text-xl sm:text-2xl font-light text-gray-900">{progress}%</span>
                       </div>
-                      <div className="w-full bg-gray-100 rounded-full h-3">
+                      <div className="w-full bg-gray-100 rounded-full h-2 sm:h-3">
                         <div 
-                          className={`h-3 rounded-full bg-gradient-to-r ${colorClasses[selectedClient.color]} transition-all duration-500`}
+                          className={`h-2 sm:h-3 rounded-full bg-gradient-to-r ${colorClasses[selectedClient.color]} transition-all duration-500`}
                           style={{ width: `${progress}%` }}
                         />
                       </div>
-                      <div className="text-sm text-gray-400">
+                      <div className="text-xs sm:text-sm text-gray-400">
                         {section.items.filter(i => i.checked).length} von {section.items.length} erledigt
                       </div>
                     </div>
@@ -568,45 +568,45 @@ export default function WebDevWorkflow() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100">
       <div className="border-b border-gray-200 bg-white/80 backdrop-blur-lg sticky top-0 z-10">
-        <div className="max-w-7xl mx-auto px-12 py-8">
-          <div className="flex items-center gap-6">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-8 lg:px-12 py-4 sm:py-6 md:py-8">
+          <div className="flex items-center gap-3 sm:gap-4 md:gap-6">
             <button
               onClick={() => setView('sections')}
-              className="text-gray-400 hover:text-black transition-colors flex items-center gap-2"
+              className="text-gray-400 hover:text-black transition-colors flex items-center gap-2 text-sm sm:text-base"
             >
               ← Zurück
             </button>
-            <div className="h-8 w-px bg-gray-200" />
-            <div className="text-2xl">{sectionEmoji}</div>
-            <h1 className="text-2xl font-medium text-gray-900">{sectionTitle}</h1>
+            <div className="h-6 sm:h-8 w-px bg-gray-200" />
+            <div className="text-xl sm:text-2xl">{sectionEmoji}</div>
+            <h1 className="text-lg sm:text-xl md:text-2xl font-medium text-gray-900 truncate">{sectionTitle}</h1>
           </div>
         </div>
       </div>
 
-      <div className="max-w-7xl mx-auto px-12 py-16">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-8 lg:px-12 py-6 sm:py-10 md:py-16">
         {view === 'todos' && (
-          <div className="bg-white rounded-3xl p-10 mb-12 shadow-sm border border-gray-200">
-            <h3 className="text-2xl font-medium mb-6 text-gray-900">Neue Aufgabe</h3>
-            <div className="space-y-4">
+          <div className="bg-white rounded-2xl sm:rounded-3xl p-4 sm:p-6 md:p-10 mb-6 sm:mb-8 md:mb-12 shadow-sm border border-gray-200">
+            <h3 className="text-xl sm:text-2xl font-medium mb-4 sm:mb-6 text-gray-900">Neue Aufgabe</h3>
+            <div className="space-y-3 sm:space-y-4">
               <input
                 type="text"
                 value={newTodo}
                 onChange={(e) => setNewTodo(e.target.value)}
                 placeholder="Aufgabenbeschreibung..."
-                className="w-full px-6 py-5 bg-gray-50 border border-gray-200 rounded-2xl focus:outline-none focus:ring-2 focus:ring-black focus:bg-white transition-all text-base text-gray-900 placeholder:text-gray-400"
+                className="w-full px-4 sm:px-6 py-3 sm:py-4 md:py-5 bg-gray-50 border border-gray-200 rounded-xl sm:rounded-2xl focus:outline-none focus:ring-2 focus:ring-black focus:bg-white transition-all text-sm sm:text-base text-gray-900 placeholder:text-gray-400"
               />
-              <div className="flex gap-4">
+              <div className="flex flex-col sm:flex-row gap-3 sm:gap-4">
                 <input
                   type="date"
                   value={newTodoDate}
                   onChange={(e) => setNewTodoDate(e.target.value)}
-                  className="flex-1 px-6 py-5 bg-gray-50 border border-gray-200 rounded-2xl focus:outline-none focus:ring-2 focus:ring-black focus:bg-white transition-all text-base text-gray-900"
+                  className="flex-1 px-4 sm:px-6 py-3 sm:py-4 md:py-5 bg-gray-50 border border-gray-200 rounded-xl sm:rounded-2xl focus:outline-none focus:ring-2 focus:ring-black focus:bg-white transition-all text-sm sm:text-base text-gray-900"
                 />
                 <button
                   onClick={addTodo}
-                  className="px-10 py-5 bg-black text-white rounded-2xl hover:bg-gray-800 transition-all flex items-center gap-3 text-base font-medium"
+                  className="w-full sm:w-auto px-6 sm:px-8 md:px-10 py-3 sm:py-4 md:py-5 bg-black text-white rounded-xl sm:rounded-2xl hover:bg-gray-800 transition-all flex items-center justify-center gap-2 sm:gap-3 text-sm sm:text-base font-medium"
                 >
-                  <Plus size={20} />
+                  <Plus size={18} className="sm:w-5 sm:h-5" />
                   Hinzufügen
                 </button>
               </div>
@@ -614,29 +614,29 @@ export default function WebDevWorkflow() {
           </div>
         )}
 
-        <div className="space-y-4">
+        <div className="space-y-3 sm:space-y-4">
           {currentSection.map(item => {
             const dateInfo = item.date ? formatDate(item.date) : null;
             
             return (
               <div
                 key={item.id}
-                className="bg-white rounded-3xl border border-gray-200 hover:shadow-lg transition-all group"
+                className="bg-white rounded-2xl sm:rounded-3xl border border-gray-200 hover:shadow-lg transition-all group"
               >
-                <div className="flex items-start gap-6 p-8">
+                <div className="flex items-start gap-3 sm:gap-4 md:gap-6 p-4 sm:p-6 md:p-8">
                   <button
                     onClick={() => toggleItem(view, item.id)}
-                    className={`mt-1 w-8 h-8 rounded-xl border-2 flex items-center justify-center flex-shrink-0 transition-all ${
+                    className={`mt-0.5 sm:mt-1 w-7 h-7 sm:w-8 sm:h-8 rounded-lg sm:rounded-xl border-2 flex items-center justify-center flex-shrink-0 transition-all ${
                       item.checked
                         ? 'bg-black border-black'
                         : 'border-gray-300 hover:border-gray-400 bg-white'
                     }`}
                   >
-                    {item.checked && <Check size={18} className="text-white" strokeWidth={3} />}
+                    {item.checked && <Check size={14} className="sm:w-[18px] sm:h-[18px] text-white" strokeWidth={3} />}
                   </button>
                   
                   {item.num && (
-                    <span className={`text-lg font-medium mt-1 flex-shrink-0 ${
+                    <span className={`text-base sm:text-lg font-medium mt-0.5 sm:mt-1 flex-shrink-0 ${
                       item.checked ? 'text-gray-300' : 'text-gray-400'
                     }`}>
                       {item.num}
@@ -644,18 +644,18 @@ export default function WebDevWorkflow() {
                   )}
                   
                   <div className="flex-1 min-w-0">
-                    <p className={`text-lg leading-relaxed ${
+                    <p className={`text-base sm:text-lg leading-relaxed ${
                       item.checked ? 'line-through text-gray-300' : 'text-gray-700'
                     }`}>
                       {item.text}
                     </p>
                     {dateInfo && (
-                      <div className="mt-4">
-                        <div className="inline-flex items-center gap-3 px-5 py-3 bg-gradient-to-r from-purple-50 to-purple-100 border border-purple-200 rounded-xl">
-                          <Calendar size={18} className="text-purple-600" />
+                      <div className="mt-3 sm:mt-4">
+                        <div className="inline-flex items-center gap-2 sm:gap-3 px-3 sm:px-4 md:px-5 py-2 sm:py-3 bg-gradient-to-r from-purple-50 to-purple-100 border border-purple-200 rounded-lg sm:rounded-xl">
+                          <Calendar size={16} className="sm:w-[18px] sm:h-[18px] text-purple-600 flex-shrink-0" />
                           <div>
-                            <div className="text-sm font-semibold text-purple-900">{dateInfo.weekday}</div>
-                            <div className="text-sm text-purple-600">{dateInfo.formatted}</div>
+                            <div className="text-xs sm:text-sm font-semibold text-purple-900">{dateInfo.weekday}</div>
+                            <div className="text-xs sm:text-sm text-purple-600">{dateInfo.formatted}</div>
                           </div>
                         </div>
                       </div>
@@ -665,9 +665,9 @@ export default function WebDevWorkflow() {
                   {view === 'todos' && !item.required && (
                     <button
                       onClick={() => deleteTodo(item.id)}
-                      className="p-3 hover:bg-gray-100 rounded-xl opacity-0 group-hover:opacity-100 transition-all flex-shrink-0"
+                      className="p-2 sm:p-3 hover:bg-gray-100 rounded-lg sm:rounded-xl opacity-100 sm:opacity-0 sm:group-hover:opacity-100 transition-all flex-shrink-0"
                     >
-                      <X size={20} className="text-gray-400" />
+                      <X size={18} className="sm:w-5 sm:h-5 text-gray-400" />
                     </button>
                   )}
                 </div>
