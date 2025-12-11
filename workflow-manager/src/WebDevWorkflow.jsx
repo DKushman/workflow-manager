@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Plus, ChevronRight, Folder, Check, X, Calendar, Download, Upload, Archive, Trash2 } from 'lucide-react';
+import { Plus, ChevronRight, Folder, Check, X, Calendar, Download, Upload, Archive, Trash2, Image as ImageIcon } from 'lucide-react';
 
 export default function WebDevWorkflow() {
   const [clients, setClients] = useState([]);
@@ -71,6 +71,23 @@ export default function WebDevWorkflow() {
     setClients(updatedClients);
   };
 
+  const handleImageUpload = (clientId, file) => {
+    if (!file) return;
+    
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      const imageData = e.target.result;
+      const updatedClients = clients.map(client => 
+        client.id === clientId ? { ...client, profileImage: imageData } : client
+      );
+      setClients(updatedClients);
+      if (selectedClient?.id === clientId) {
+        setSelectedClient({ ...selectedClient, profileImage: imageData });
+      }
+    };
+    reader.readAsDataURL(file);
+  };
+
   const addClient = () => {
     if (!newClientName.trim()) return;
     
@@ -78,6 +95,7 @@ export default function WebDevWorkflow() {
       id: Date.now(),
       name: newClientName,
       archived: false,
+      profileImage: null,
       color: ['blue', 'purple', 'green', 'orange', 'pink'][Math.floor(Math.random() * 5)],
       guidelines: [
         { id: 1, num: '01', text: 'Projektordner in Cursor anlegen mit /images, /videos, /css, /js', checked: false },
@@ -215,17 +233,17 @@ export default function WebDevWorkflow() {
       <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100">
         {/* Header mit Logo */}
         <div className="border-b border-gray-200 bg-white/80 backdrop-blur-lg sticky top-0 z-10">
-          <div className="max-w-7xl mx-auto px-12 py-8">
-            <div className="flex items-center justify-between">
-              <div className="flex items-center gap-6">
-                <div className="bg-black px-6 py-3 rounded-xl">
-                  <h1 className="text-2xl font-bold text-white tracking-tight">DEVDESIGN.STUDIO</h1>
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-8 lg:px-12 py-4 sm:py-6 md:py-8">
+            <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+              <div className="flex items-center gap-3 sm:gap-6">
+                <div className="bg-black px-4 sm:px-6 py-2 sm:py-3 rounded-xl">
+                  <h1 className="text-lg sm:text-xl md:text-2xl font-bold text-white tracking-tight">DEVDESIGN.STUDIO</h1>
                 </div>
-                <div className="text-sm text-gray-400">
+                <div className="text-xs sm:text-sm text-gray-400 hidden sm:block">
                   Workflow Manager
                 </div>
               </div>
-              <div className="flex gap-3">
+              <div className="hidden md:flex gap-3">
                 <button
                   onClick={exportData}
                   className="px-5 py-3 bg-white border border-gray-200 rounded-xl hover:bg-gray-50 transition-all flex items-center gap-2 text-sm text-gray-900"
@@ -243,27 +261,27 @@ export default function WebDevWorkflow() {
           </div>
         </div>
 
-        <div className="max-w-7xl mx-auto px-12 py-16">
-          <div className="mb-16">
-            <h2 className="text-5xl font-light tracking-tight mb-4 text-gray-900">Projekte</h2>
-            <p className="text-gray-400 text-lg">Verwalte deine Kundenprojekte und Workflows</p>
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-8 lg:px-12 py-8 sm:py-12 md:py-16">
+          <div className="mb-8 sm:mb-12 md:mb-16">
+            <h2 className="text-3xl sm:text-4xl md:text-5xl font-light tracking-tight mb-2 sm:mb-4 text-gray-900">Projekte</h2>
+            <p className="text-gray-400 text-base sm:text-lg">Verwalte deine Kundenprojekte und Workflows</p>
           </div>
           
-          <div className="bg-white rounded-3xl p-10 mb-12 shadow-sm border border-gray-200">
-            <div className="flex gap-4">
+          <div className="bg-white rounded-2xl sm:rounded-3xl p-4 sm:p-6 md:p-10 mb-6 sm:mb-8 md:mb-12 shadow-sm border border-gray-200">
+            <div className="flex flex-col sm:flex-row gap-3 sm:gap-4">
               <input
                 type="text"
                 value={newClientName}
                 onChange={(e) => setNewClientName(e.target.value)}
                 onKeyPress={(e) => e.key === 'Enter' && addClient()}
                 placeholder="Neues Projekt erstellen..."
-                className="flex-1 px-6 py-5 bg-gray-50 border border-gray-200 rounded-2xl focus:outline-none focus:ring-2 focus:ring-black focus:bg-white transition-all text-base text-gray-900 placeholder:text-gray-400"
+                className="flex-1 px-4 sm:px-6 py-3 sm:py-4 md:py-5 bg-gray-50 border border-gray-200 rounded-xl sm:rounded-2xl focus:outline-none focus:ring-2 focus:ring-black focus:bg-white transition-all text-sm sm:text-base text-gray-900 placeholder:text-gray-400"
               />
               <button
                 onClick={addClient}
-                className="px-10 py-5 bg-black text-white rounded-2xl hover:bg-gray-800 transition-all flex items-center gap-3 text-base font-medium shadow-lg shadow-black/10"
+                className="w-full sm:w-auto px-6 sm:px-8 md:px-10 py-3 sm:py-4 md:py-5 bg-black text-white rounded-xl sm:rounded-2xl hover:bg-gray-800 transition-all flex items-center justify-center gap-2 sm:gap-3 text-sm sm:text-base font-medium shadow-lg shadow-black/10"
               >
-                <Plus size={20} />
+                <Plus size={18} className="sm:w-5 sm:h-5" />
                 Erstellen
               </button>
             </div>
@@ -284,22 +302,50 @@ export default function WebDevWorkflow() {
                     className="bg-white rounded-3xl border border-gray-200 hover:shadow-xl transition-all group overflow-hidden"
                   >
                     <div className={`h-2 bg-gradient-to-r ${colorClasses[client.color]}`} />
-                    <div className="p-8">
+                    <div className="p-4 sm:p-6 md:p-8">
                       <div 
                         onClick={() => {
                           setSelectedClient(client);
                           setView('sections');
                         }}
-                        className="cursor-pointer mb-6"
+                        className="cursor-pointer mb-4 sm:mb-6"
                       >
-                        <div className="flex items-start justify-between mb-4">
-                          <div className="flex items-center gap-4">
-                            <div className="w-14 h-14 bg-gradient-to-br from-gray-100 to-gray-200 rounded-2xl flex items-center justify-center">
-                              <Folder size={24} className="text-gray-700" />
+                        <div className="flex items-start justify-between mb-3 sm:mb-4">
+                          <div className="flex items-center gap-3 sm:gap-4">
+                            <div className="relative group/image">
+                              {client.profileImage ? (
+                                <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-xl sm:rounded-2xl overflow-hidden flex-shrink-0 border-2 border-gray-200">
+                                  <img 
+                                    src={client.profileImage} 
+                                    alt={client.name}
+                                    className="w-full h-full object-cover"
+                                  />
+                                </div>
+                              ) : (
+                                <div className="w-12 h-12 sm:w-14 sm:h-14 bg-gradient-to-br from-gray-100 to-gray-200 rounded-xl sm:rounded-2xl flex items-center justify-center flex-shrink-0">
+                                  <Folder size={20} className="sm:w-6 sm:h-6 text-gray-700" />
+                                </div>
+                              )}
+                              <label 
+                                onClick={(e) => e.stopPropagation()}
+                                className="absolute inset-0 bg-black/50 opacity-0 group-hover/image:opacity-100 rounded-xl sm:rounded-2xl flex items-center justify-center cursor-pointer transition-opacity"
+                              >
+                                <ImageIcon size={16} className="text-white" />
+                                <input 
+                                  type="file" 
+                                  accept="image/*" 
+                                  onChange={(e) => {
+                                    if (e.target.files[0]) {
+                                      handleImageUpload(client.id, e.target.files[0]);
+                                    }
+                                  }}
+                                  className="hidden"
+                                />
+                              </label>
                             </div>
-                            <div>
-                              <h3 className="text-2xl font-medium text-gray-900 mb-1">{client.name}</h3>
-                              <p className="text-sm text-gray-400">
+                            <div className="min-w-0 flex-1">
+                              <h3 className="text-lg sm:text-xl md:text-2xl font-medium text-gray-900 mb-1 truncate">{client.name}</h3>
+                              <p className="text-xs sm:text-sm text-gray-400">
                                 {completedTasks} von {totalTasks} abgeschlossen
                               </p>
                             </div>
@@ -320,16 +366,17 @@ export default function WebDevWorkflow() {
                         </div>
                       </div>
 
-                      <div className="flex gap-2 pt-4 border-t border-gray-100">
+                      <div className="flex gap-2 pt-3 sm:pt-4 border-t border-gray-100">
                         <button
                           onClick={(e) => {
                             e.stopPropagation();
                             archiveClient(client.id);
                           }}
-                          className="flex-1 px-4 py-3 bg-gray-50 hover:bg-gray-100 rounded-xl transition-all flex items-center justify-center gap-2 text-sm text-gray-600"
+                          className="flex-1 px-3 sm:px-4 py-2 sm:py-3 bg-gray-50 hover:bg-gray-100 rounded-lg sm:rounded-xl transition-all flex items-center justify-center gap-1 sm:gap-2 text-xs sm:text-sm text-gray-600"
                         >
-                          <Archive size={16} />
-                          Archivieren
+                          <Archive size={14} className="sm:w-4 sm:h-4" />
+                          <span className="hidden sm:inline">Archivieren</span>
+                          <span className="sm:hidden">Archiv</span>
                         </button>
                         <button
                           onClick={(e) => {
@@ -338,9 +385,9 @@ export default function WebDevWorkflow() {
                               deleteClient(client.id);
                             }
                           }}
-                          className="flex-1 px-4 py-3 bg-red-50 hover:bg-red-100 rounded-xl transition-all flex items-center justify-center gap-2 text-sm text-red-600"
+                          className="flex-1 px-3 sm:px-4 py-2 sm:py-3 bg-red-50 hover:bg-red-100 rounded-lg sm:rounded-xl transition-all flex items-center justify-center gap-1 sm:gap-2 text-xs sm:text-sm text-red-600"
                         >
-                          <Trash2 size={16} />
+                          <Trash2 size={14} className="sm:w-4 sm:h-4" />
                           Löschen
                         </button>
                       </div>
@@ -352,22 +399,32 @@ export default function WebDevWorkflow() {
           )}
 
           {archivedClients.length > 0 && (
-            <div className="mt-16">
-              <h3 className="text-2xl font-light mb-6 text-gray-400">Archiviert</h3>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="mt-8 sm:mt-12 md:mt-16">
+              <h3 className="text-xl sm:text-2xl font-light mb-4 sm:mb-6 text-gray-400">Archiviert</h3>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
                 {archivedClients.map(client => (
                   <div
                     key={client.id}
-                    className="bg-gray-50 rounded-3xl border border-gray-200 p-8 opacity-60 hover:opacity-100 transition-all"
+                    className="bg-gray-50 rounded-2xl sm:rounded-3xl border border-gray-200 p-4 sm:p-6 md:p-8 opacity-60 hover:opacity-100 transition-all"
                   >
-                    <div className="flex items-center justify-between">
-                      <div className="flex items-center gap-4">
-                        <Folder size={20} className="text-gray-400" />
-                        <span className="text-lg text-gray-600">{client.name}</span>
+                    <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 sm:gap-0">
+                      <div className="flex items-center gap-3 sm:gap-4 min-w-0 flex-1">
+                        {client.profileImage ? (
+                          <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-lg sm:rounded-xl overflow-hidden flex-shrink-0 border-2 border-gray-200">
+                            <img 
+                              src={client.profileImage} 
+                              alt={client.name}
+                              className="w-full h-full object-cover"
+                            />
+                          </div>
+                        ) : (
+                          <Folder size={18} className="sm:w-5 sm:h-5 text-gray-400 flex-shrink-0" />
+                        )}
+                        <span className="text-base sm:text-lg text-gray-600 truncate">{client.name}</span>
                       </div>
                       <button
                         onClick={() => archiveClient(client.id)}
-                        className="px-4 py-2 bg-white rounded-lg text-sm text-gray-600 hover:bg-gray-100"
+                        className="w-full sm:w-auto px-4 py-2 bg-white rounded-lg text-xs sm:text-sm text-gray-600 hover:bg-gray-100"
                       >
                         Wiederherstellen
                       </button>
@@ -391,19 +448,49 @@ export default function WebDevWorkflow() {
     return (
       <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100">
         <div className="border-b border-gray-200 bg-white/80 backdrop-blur-lg sticky top-0 z-10">
-          <div className="max-w-7xl mx-auto px-12 py-8">
-            <div className="flex items-center justify-between">
-              <div className="flex items-center gap-6">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-8 lg:px-12 py-4 sm:py-6 md:py-8">
+            <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+              <div className="flex items-center gap-3 sm:gap-6">
                 <button
                   onClick={() => setView('clients')}
-                  className="text-gray-400 hover:text-black transition-colors flex items-center gap-2"
+                  className="text-gray-400 hover:text-black transition-colors flex items-center gap-2 text-sm sm:text-base"
                 >
                   ← Projekte
                 </button>
-                <div className="h-8 w-px bg-gray-200" />
-                <h1 className="text-2xl font-medium text-gray-900">{selectedClient.name}</h1>
+                <div className="h-6 sm:h-8 w-px bg-gray-200" />
+                <div className="relative group/image">
+                  {selectedClient.profileImage ? (
+                    <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-xl overflow-hidden flex-shrink-0 border-2 border-gray-200">
+                      <img 
+                        src={selectedClient.profileImage} 
+                        alt={selectedClient.name}
+                        className="w-full h-full object-cover"
+                      />
+                    </div>
+                  ) : (
+                    <div className="w-10 h-10 sm:w-12 sm:h-12 bg-gradient-to-br from-gray-100 to-gray-200 rounded-xl flex items-center justify-center flex-shrink-0">
+                      <Folder size={18} className="sm:w-5 sm:h-5 text-gray-700" />
+                    </div>
+                  )}
+                  <label 
+                    className="absolute inset-0 bg-black/50 opacity-0 group-hover/image:opacity-100 rounded-xl flex items-center justify-center cursor-pointer transition-opacity"
+                  >
+                    <ImageIcon size={14} className="text-white" />
+                    <input 
+                      type="file" 
+                      accept="image/*" 
+                      onChange={(e) => {
+                        if (e.target.files[0]) {
+                          handleImageUpload(selectedClient.id, e.target.files[0]);
+                        }
+                      }}
+                      className="hidden"
+                    />
+                  </label>
+                </div>
+                <h1 className="text-xl sm:text-2xl font-medium text-gray-900">{selectedClient.name}</h1>
               </div>
-              <div className="text-sm text-gray-500">
+              <div className="text-xs sm:text-sm text-gray-500">
                 {completedTasks} / {totalTasks} abgeschlossen
               </div>
             </div>
