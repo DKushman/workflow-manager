@@ -270,6 +270,24 @@ export default function WebDevWorkflow() {
     setSelectedClient(updatedClients.find(c => c.id === selectedClient.id));
   };
 
+  const updateClientLinks = () => {
+    if (!editingClient) return;
+    
+    const updatedClients = clients.map(client => 
+      client.id === editingClient.id 
+        ? { ...client, figmaUrl: editFigmaUrl.trim(), websiteUrl: editWebsiteUrl.trim() }
+        : client
+    );
+    setClients(updatedClients);
+    if (selectedClient?.id === editingClient.id) {
+      setSelectedClient({ ...selectedClient, figmaUrl: editFigmaUrl.trim(), websiteUrl: editWebsiteUrl.trim() });
+    }
+    setShowEditClientModal(false);
+    setEditingClient(null);
+    setEditFigmaUrl('');
+    setEditWebsiteUrl('');
+  };
+
   const getProgress = (items) => {
     const checked = items.filter(i => i.checked).length;
     return Math.round((checked / items.length) * 100);
@@ -597,7 +615,7 @@ export default function WebDevWorkflow() {
           {showEditClientModal && editingClient && (
             <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4" onClick={() => setShowEditClientModal(false)}>
               <div className="bg-white rounded-2xl sm:rounded-3xl p-6 sm:p-8 md:p-10 max-w-lg w-full shadow-xl" onClick={(e) => e.stopPropagation()}>
-                <h3 className="text-xl sm:text-2xl font-bold mb-4 sm:mb-6 text-gray-900">Links bearbeiten</h3>
+                <h3 className="text-xl sm:text-2xl font-bold mb-4 sm:mb-6 text-gray-900">Links bearbeiten - {editingClient.name}</h3>
                 <div className="space-y-4">
                   <div>
                     <label className="block text-sm font-semibold text-gray-900 mb-2">Figma URL</label>
